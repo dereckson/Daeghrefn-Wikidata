@@ -82,11 +82,25 @@ labels_languages = set(descriptions.keys()).intersection(latin_languages)
 labels = {lang: givenname for lang in labels_languages}
 
 item.editLabels(labels, summary='Adding given name labels')
-item.editDescriptions(descriptions, summary='Adding given name descriptions')
 
+# Instance of: "[gender] given name"
 claim = pywikibot.Claim(repo, 'P31')
 target = pywikibot.ItemPage(repo, genre_items[genre])
 claim.setTarget(target)
 item.addClaim(claim)
+
+# Native label: <the given name>
+claim = pywikibot.Claim(repo, 'P1705')
+target = pywikibot.WbMonolingualText(text=givenname, language='mul')
+claim.setTarget(target)
+item.addClaim(claim)
+
+# Writing system: "latin"
+claim = pywikibot.Claim(repo, 'P282')
+target = pywikibot.ItemPage(repo, 'Q8229')
+claim.setTarget(target)
+item.addClaim(claim)
+
+item.editDescriptions(descriptions, summary='Adding given name descriptions')
 
 print(title)
